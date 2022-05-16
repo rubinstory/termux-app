@@ -72,7 +72,7 @@ public class Errno {
     public static Errno valueOf(String type, Integer code) {
         boolean isTypeInvaild = (type == null) || (type.isEmpty());
         boolean isCodeInvalid = (code == null);
-        
+
         if (isTypeInvaild || isCodeInvalid) return null;
         return map.get(type + ":" + code);
     }
