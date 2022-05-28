@@ -10,6 +10,8 @@ import com.termux.shared.android.ProcessUtils;
 import com.termux.shared.android.UserUtils;
 import com.termux.shared.logger.Logger;
 import com.termux.shared.markdown.MarkdownUtils;
+import com.termux.shared.net.socket.local.StringGenerator.PeerCredStringGenerator;
+import com.termux.shared.net.socket.local.StringGenerator.StringGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +39,10 @@ public class PeerCred {
 
     /** Command line that started the process. */
     public String cmdline;
+
+
+    /** {@link StringGenerator} for {@link PeerCred}. */
+    private StringGenerator stringGenerator = new PeerCredStringGenerator();
 
     PeerCred() {
         // Initialize to -1 instead of 0 in case a failed getPeerCred()/getsockopt() call somehow doesn't report failure and returns the uid of root
@@ -81,40 +87,22 @@ public class PeerCred {
     }
 
     /**
-     * Get log variables {@link List < Pair <String, Object>>} for {@link PeerCred}.
-     *
-     * @return Returns the log variables in list {@link List<    Pair    <String, String>>}.
+     * Set log variables {@link List < Pair <String, Object>>} for {@link PeerCredStringGenerator}.
      */
-    private List<Pair<String, String>> getLogVariableList() {
-        List<Pair<String, String>> variableList = new ArrayList<Pair<String, String>>() {{
+    private void setLogVariableList() {
+        stringGenerator.setLogVariableList(new ArrayList<Pair<String, Object>>() {{
             add(Pair.create("Process", getProcessString()));
             add(Pair.create("User", getUserString()));
             add(Pair.create("Group", getGroupString()));
             add(Pair.create("Cmdline", cmdline));
-        }};
-        return variableList;
+        }});
     }
 
     /** Get a log {@link String} for the {@link PeerCred}. */
     @NonNull
     public String getLogString() {
-        StringBuilder logString = new StringBuilder();
-
-        logString.append("Peer Cred:");
-
-        for (Pair<String, String> logVar: getLogVariableList()) {
-            String label = logVar.first;
-            String object = logVar.second;
-            switch(label) {
-                case "Cmdline":
-                    if (label != null) logString.append("\n").append(Logger.getMultiLineLogStringEntry(label, object, "-"));
-                    break;
-                default:
-                    logString.append("\n").append(Logger.getSingleLineLogStringEntry(label, object, "-"));
-            }
-        }
-
-        return logString.toString();
+        setLogVariableList();
+        return stringGenerator.getLogString();
     }
 
     /**
@@ -131,23 +119,8 @@ public class PeerCred {
     /** Get a markdown {@link String} for the {@link PeerCred}. */
     @NonNull
     public String getMarkdownString() {
-        StringBuilder markdownString = new StringBuilder();
-
-        markdownString.append("## ").append("Peer Cred");
-
-        for (Pair<String, String> logVar: getLogVariableList()) {
-            String label = logVar.first;
-            String object = logVar.second;
-            switch(label) {
-                case "Cmdline":
-                    if (label != null) markdownString.append("\n").append(MarkdownUtils.getMultiLineMarkdownStringEntry(label, object, "-"));
-                    break;
-                default:
-                    markdownString.append("\n").append(MarkdownUtils.getSingleLineMarkdownStringEntry(label, object, "-"));
-            }
-        }
-
-        return markdownString.toString();
+        setLogVariableList();
+        return stringGenerator.getMarkdownString();
     }
 
     @NonNull

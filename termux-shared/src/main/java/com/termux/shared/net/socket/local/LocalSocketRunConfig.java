@@ -7,6 +7,9 @@ import androidx.annotation.NonNull;
 import com.termux.shared.file.FileUtils;
 import com.termux.shared.logger.Logger;
 import com.termux.shared.markdown.MarkdownUtils;
+import com.termux.shared.net.socket.local.StringGenerator.LocalSocketRunConfigStringGenerator;
+import com.termux.shared.net.socket.local.StringGenerator.PeerCredStringGenerator;
+import com.termux.shared.net.socket.local.StringGenerator.StringGenerator;
 
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
@@ -98,6 +101,9 @@ public class LocalSocketRunConfig implements Serializable {
     private Integer mBacklog;
     public static final int DEFAULT_BACKLOG = 50;
 
+    /** {@link StringGenerator} for {@link LocalSocketRunConfig}. */
+    private StringGenerator stringGenerator;
+
 
     /**
      * Create an new instance of {@link LocalSocketRunConfig}.
@@ -115,6 +121,8 @@ public class LocalSocketRunConfig implements Serializable {
             mPath = path;
         else
             mPath = FileUtils.getCanonicalPath(path, null);
+
+        stringGenerator = new LocalSocketRunConfigStringGenerator(mTitle);
     }
 
 
@@ -212,12 +220,10 @@ public class LocalSocketRunConfig implements Serializable {
     }
 
     /**
-     * Get log variables {@link List<Pair<String, Object>>} for {@link LocalSocketRunConfig}.
-     *
-     * @return Returns the log variables in list {@link List<Pair<String, Object>>}.
+     * Set log variables {@link List<Pair<String, Object>>} for {@link LocalSocketRunConfigStringGenerator}.
      */
-    private List<Pair<String, Object>> getLogVariableList() {
-        List<Pair<String, Object>> logVariableList = new ArrayList<Pair<String, Object>>() {{
+    private void setLogVariableList() {
+        stringGenerator.setLogVariableList(new ArrayList<Pair<String, Object>>() {{
             add(Pair.create("Path", mPath));
             add(Pair.create("AbstractNamespaceSocket", mAbstractNamespaceSocket));
             add(Pair.create("LocalSocketManagerClient", mLocalSocketManagerClient.getClass().getName()));
@@ -226,24 +232,14 @@ public class LocalSocketRunConfig implements Serializable {
             add(Pair.create("SendTimeout", getSendTimeout()));
             add(Pair.create("Deadline", getDeadline()));
             add(Pair.create("Backlog", getBacklog()));
-        }};
-        return logVariableList;
+        }});
     }
 
     /** Get a log {@link String} for the {@link LocalSocketRunConfig}. */
     @NonNull
     public String getLogString() {
-        StringBuilder logString = new StringBuilder();
-
-        logString.append(mTitle).append(" Socket Server Run Config:");
-        
-        for(Pair<String, Object> logVar: getLogVariableList()) {
-            String label = logVar.first;
-            Object object = logVar.second;
-            logString.append("\n").append(Logger.getSingleLineLogStringEntry(label, object, "-"));
-        }
-
-        return logString.toString();
+        setLogVariableList();
+        return stringGenerator.getLogString();
     }
 
     /**
@@ -260,17 +256,8 @@ public class LocalSocketRunConfig implements Serializable {
     /** Get a markdown {@link String} for the {@link LocalSocketRunConfig}. */
     @NonNull
     public String getMarkdownString() {
-        StringBuilder markdownString = new StringBuilder();
-
-        markdownString.append("## ").append(mTitle).append(" Socket Server Run Config");
-
-        for(Pair<String, Object> logVar: getLogVariableList()) {
-            String label = logVar.first;
-            Object object = logVar.second;
-            markdownString.append("\n").append(MarkdownUtils.getSingleLineMarkdownStringEntry(label, object, "-"));
-        }
-
-        return markdownString.toString();
+        setLogVariableList();
+        return stringGenerator.getMarkdownString();
     }
 
 
