@@ -40,5 +40,22 @@ public class AndroidUtilsTest {
         assertEquals(stringBuilder.toString(), expected);
     }
 
+    /**
+     * Purpose: Check that AndroidUtils append Markdown properly If Object is not "REL"
+     * Input: stringBuilder,"Label","notREL"
+     * Expected: "\n" + "**Label**: `" + "notREL" + "`  "
+     *
+     */
+
+    @Test
+    public void testAppendPropertyToMarkdownIfSet() {
+        // Create an active task
+        StringBuilder stringBuilder = new StringBuilder();
+        // Call your function
+        AndroidUtils.appendPropertyToMarkdownIfSet(stringBuilder,"Label","notREL");
+        String expected = "\n" + "**Label**: `" + "notREL" + "`  ";
+        // Check the result
+        assertEquals(expected, stringBuilder.toString());
+    }
 
 }
