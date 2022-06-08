@@ -263,4 +263,24 @@ public class LoggerTest extends TestCase {
         expected = "### StackTraces\n" + "\n" + "```\n" + "test\n" + "```\n" + "##\n";
         assertEquals(result, expected);
     }
+
+    /**
+     * Purpose: Check when stackTraceStringArray is given
+     * Input: Logger.getStackTracesMarkdownString (null, {"test"}), (null, {"test", "test"})
+     * Expected:
+     *      (null, {"test"}) = "### StackTraces\n" + "\n" + "```\n" + "test\n" + "```\n" + "##\n"
+     *      (null, {"test", "test"}) = "### StackTraces\n" + "\n" + "\n" + "#### Stacktrace 1\n" + "\n" + "```\n" + "test\n" + "```\n" + "\n" + "\n" + "#### Stacktrace 2\n" + "\n" + "```\n" + "test\n" + "```\n" + "##\n"
+     */
+    @Test
+    public void testGetStackTracesMarkdownStringForStackTraceStringArray() {
+        String[] stackTraceStringArray = {"test"};
+        String result = Logger.getStackTracesMarkdownString(null, stackTraceStringArray);
+        String expected = "### StackTraces\n" + "\n" + "```\n" + "test\n" + "```\n" + "##\n";
+        assertEquals(result, expected);
+
+        stackTraceStringArray = new String[] {"test", "test"};
+        result = Logger.getStackTracesMarkdownString(null, stackTraceStringArray);
+        expected = "### StackTraces\n" + "\n" + "\n" + "#### Stacktrace 1\n" + "\n" + "```\n" + "test\n" + "```\n" + "\n" + "\n" + "#### Stacktrace 2\n" + "\n" + "```\n" + "test\n" + "```\n" + "##\n";
+        assertEquals(result, expected);
+    }
 }
