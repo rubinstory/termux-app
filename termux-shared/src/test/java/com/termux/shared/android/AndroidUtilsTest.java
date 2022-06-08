@@ -94,4 +94,21 @@ public class AndroidUtilsTest {
         assertEquals(expected,result);
     }
 
+    /**
+     * Purpose:test get SystemProperty fail because of wrong key in input
+     * Input: String :"wrongKey"
+     * Expected: null
+     *
+     */
+
+    @Test
+    public void testGetSystemPropertyWithAndroidAPIWrongKeyFail() {
+        // Create an active task
+        // Call your function
+        String result = AndroidUtils.getSystemPropertyWithAndroidAPI("wrongKey");
+        String expected = null;
+        // Check the result
+        assertEquals(expected, result);
+    }
+
 }
