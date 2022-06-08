@@ -299,4 +299,19 @@ public class LoggerTest extends TestCase {
         result = Logger.getMultiLineLogStringEntry("label", "object", "-");
         assertEquals(result, "label:\n```\nobject\n```\n");
     }
+
+    /**
+     * Purpose: Check logLevelsArray is successfully returned
+     * Input: Logger.testGetLogLevelsArray ()
+     * Expected:
+     *      () = { String.valueOf(Logger.LOG_LEVEL_OFF), String.valueOf(Logger.LOG_LEVEL_NORMAL), String.valueOf(Logger.LOG_LEVEL_DEBUG), String.valueOf(Logger.LOG_LEVEL_VERBOSE)}
+     */
+    @Test
+    public void testGetLogLevelsArray() {
+        CharSequence[] expected = { String.valueOf(Logger.LOG_LEVEL_OFF),
+            String.valueOf(Logger.LOG_LEVEL_NORMAL),
+            String.valueOf(Logger.LOG_LEVEL_DEBUG),
+            String.valueOf(Logger.LOG_LEVEL_VERBOSE)};
+        Assert.assertArrayEquals(Logger.getLogLevelsArray(), expected);
+    }
 }
