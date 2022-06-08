@@ -22,5 +22,23 @@ public class AndroidUtilsTest {
         assertEquals(result, expected);
     }
 
+    /**
+     * Purpose: Check that AndroidUtils append Markdown properly
+     * Input: stringBuilder,"Label","object"
+     * Expected: "\n" + "**Label**: `" + "object" + "`  "
+     *
+     */
+
+    @Test
+    public void testAppendPropertyToMarkdown() {
+        // Create an active task
+        StringBuilder stringBuilder = new StringBuilder();
+        // Call your function
+        AndroidUtils.appendPropertyToMarkdown(stringBuilder,"Label","object");
+        String expected = "\n" + "**Label**: `" + "object" + "`  ";
+        // Check the result
+        assertEquals(stringBuilder.toString(), expected);
+    }
+
 
 }
