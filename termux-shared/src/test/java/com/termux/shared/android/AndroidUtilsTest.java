@@ -54,8 +54,27 @@ public class AndroidUtilsTest {
         // Call your function
         AndroidUtils.appendPropertyToMarkdownIfSet(stringBuilder,"Label","notREL");
         String expected = "\n" + "**Label**: `" + "notREL" + "`  ";
+        System.out.println(expected);
         // Check the result
         assertEquals(expected, stringBuilder.toString());
+    }
+
+    /**
+     * Purpose:test get SystemProperty properly
+     * Input: "os.version"
+     * Expected: 10.0
+     *           it depends on System OS version
+     *
+     */
+
+    @Test
+    public void testGetSystemPropertyWithAndroidAPISuccess() {
+        // Create an active task
+        // Call your function
+        String result = AndroidUtils.getSystemPropertyWithAndroidAPI("os.version");
+        String expected = System.getProperty("os.version");
+        // Check the result
+        assertEquals(expected,result);
     }
 
 }
