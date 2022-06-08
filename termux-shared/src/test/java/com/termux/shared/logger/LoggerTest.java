@@ -339,6 +339,17 @@ public class LoggerTest extends TestCase {
     }
 
     /**
+     * Purpose: Check if DEFAULT_LOG_TAG is null
+     * Input: Logger.getDefaultLogTag ()
+     * Expected:
+     *      () = Not null
+     */
+    @Test
+    public void testGetDefaultLogTag() {
+        assertNotNull(Logger.getDefaultLogTag());
+    }
+
+    /**
      * Purpose: Check when null defaultLogTag is given
      * Input: Logger.setDefaultLogTag (null)
      * Expected:
