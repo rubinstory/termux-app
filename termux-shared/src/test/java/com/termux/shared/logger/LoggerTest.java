@@ -244,4 +244,23 @@ public class LoggerTest extends TestCase {
         result = Logger.getStackTracesString(null, null);
         assertEquals(result, "StackTraces: -");
     }
+
+    /**
+     * Purpose: Check when null label is given
+     * Input: Logger.getStackTracesMarkdownString (null, null), (null, ["test"])
+     * Expected:
+     *      (null, null) = "### StackTraces\n" + "\n" + "`-`\n" + "##\n"
+     *      (null, ["test"]) = "### StackTraces\n" + "\n" + "```\n" + "test\n" + "```\n" + "##\n"
+     */
+    @Test
+    public void testGetStackTracesMarkdownStringForNullLabel() {
+        String result = Logger.getStackTracesMarkdownString(null, null);
+        String expected = "### StackTraces\n" + "\n" + "`-`\n" + "##\n";
+        assertEquals(result, expected);
+
+        String[] stackTracesStringArray = {"test"};
+        result = Logger.getStackTracesMarkdownString(null, stackTracesStringArray);
+        expected = "### StackTraces\n" + "\n" + "```\n" + "test\n" + "```\n" + "##\n";
+        assertEquals(result, expected);
+    }
 }
