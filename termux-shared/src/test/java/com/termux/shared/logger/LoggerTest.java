@@ -1,11 +1,13 @@
 package com.termux.shared.logger;
 
-import android.content.Context;
+import android.content.*;
+import com.termux.shared.activities.ReportActivity;
 import junit.framework.TestCase;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -332,6 +334,21 @@ public class LoggerTest extends TestCase {
         try {
             result = Logger.getLogLevelLabelsArray(null, logLevels,true);
         } catch(NullPointerException e) {
+            assertTrue(e instanceof NullPointerException);
+        }
+    }
+
+    /**
+     * Purpose: Check when null defaultLogTag is given
+     * Input: Logger.setDefaultLogTag (null)
+     * Expected:
+     *      (null) = NullPointerException
+     */
+    @Test
+    public void testSetDefaultLogTag() {
+        try {
+            Logger.setDefaultLogTag(null);
+        } catch (NullPointerException e) {
             assertTrue(e instanceof NullPointerException);
         }
     }
