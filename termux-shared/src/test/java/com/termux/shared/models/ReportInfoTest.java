@@ -1,13 +1,14 @@
 package com.termux.shared.models;
 
 import com.termux.shared.markdown.MarkdownUtils;
+import androidx.core.util.Pair;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.mockStatic;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import org.mockito.MockedStatic;
 
@@ -45,18 +46,15 @@ public class ReportInfoTest {
      *
      *
      */
-    private static MockedStatic<MarkdownUtils> markdownUtils;
-    private static MockedStatic<ReportInfo> reportInfo;
+    private static MockedStatic<Pair> pair;
     @BeforeClass
     public static void beforeClass() {
-        markdownUtils = mockStatic(MarkdownUtils.class);
-        reportInfo = mockStatic(ReportInfo.class);
+        pair = mockStatic(Pair.class);
     }
 
     @AfterClass
     public static void afterClass() {
-        markdownUtils.close();
-        reportInfo.close();
+        pair.close();
     }
 
     @Test
@@ -64,19 +62,18 @@ public class ReportInfoTest {
         // Create an active task
         ReportInfo reportInfo = new ReportInfo("userAction","sender","reportTitle");
 
-        when(MarkdownUtils.getSingleLineMarkdownStringEntry(eq("User Action"), any(), eq("-"))).thenReturn("**User Action**: `" + reportInfo.userAction + "`  ");
-        when(MarkdownUtils.getSingleLineMarkdownStringEntry(eq("Sender"), any(), eq("-"))).thenReturn("**Sender**: `" + reportInfo.sender + "`  ");
-        when(MarkdownUtils.getSingleLineMarkdownStringEntry(eq("Report Timestamp"), any(), eq("-"))).thenReturn("**Report Timestamp**: `" + reportInfo.reportTimestamp + "`  ");
-
         String userAction = MarkdownUtils.getSingleLineMarkdownStringEntry("User Action", reportInfo.userAction, "-");
         String sender = MarkdownUtils.getSingleLineMarkdownStringEntry("Sender", reportInfo.sender, "-");
         String reportTitle = MarkdownUtils.getSingleLineMarkdownStringEntry("Report Timestamp", reportInfo.reportTimestamp, "-");
 
-        when(ReportInfo.getReportInfoMarkdownString(reportInfo)).thenReturn("## Report Info\n\n"+ "\n" + userAction + "\n" + sender + "\n" + reportTitle + "\n##\n\n");
+        reportInfo.setAddReportInfoHeaderToMarkdown(true);
+        when(Pair.create("User Action", reportInfo.userAction)).thenReturn(new Pair("User Action", reportInfo.userAction));
+        when(Pair.create("Sender", reportInfo.sender)).thenReturn(new Pair("Sender", reportInfo.sender));
+        when(Pair.create("Report Timestamp", reportInfo.reportTimestamp)).thenReturn(new Pair("Report Timestamp", reportInfo.reportTimestamp));
 
         // Call your function
         String markDownReport = ReportInfo.getReportInfoMarkdownString(reportInfo);
         // Check the result
-        assertEquals(markDownReport, "## Report Info\n\n"+ "\n" + userAction + "\n" + sender + "\n" + reportTitle + "\n##\n\n");
+        assertEquals(markDownReport, "## Report Info\n\n"+ "\n" + userAction + "\n" + sender + "\n" + reportTitle + "\n##\n\n"+"null");
     }
 }
