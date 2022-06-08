@@ -363,4 +363,15 @@ public class LoggerTest extends TestCase {
             assertTrue(e instanceof NullPointerException);
         }
     }
+
+    /**
+     * Purpose: Check if getLogLevel is equal to DEFAULT_LOG_LEVEL
+     * Input: Logger.getLogLevel ()
+     * Expected:
+     *      () = DEFAULT_LOG_LEVEL
+     */
+    @Test
+    public void testGetLogLevel() {
+        assertEquals(Logger.getLogLevel(), Logger.DEFAULT_LOG_LEVEL);
+    }
 }
