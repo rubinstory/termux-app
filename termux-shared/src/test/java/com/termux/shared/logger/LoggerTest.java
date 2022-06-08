@@ -2,6 +2,7 @@ package com.termux.shared.logger;
 
 import junit.framework.TestCase;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -173,5 +174,22 @@ public class LoggerTest extends TestCase {
 
         result = Logger.getSingleLineLogStringEntry("label", "message", "-");
         assertEquals(result, "label: `message`");
+    }
+
+    /**
+     * Purpose: Check when null throwable is given
+     * Input: Logger.getStackTracesStringArray (null)
+     * Expected:
+     *      (null) = [null]
+     */
+    @Test
+    public void testGetStackTracesStringArrayForNullThrowable() {
+        Throwable nullObject = null;
+        String[] result = Logger.getStackTracesStringArray(nullObject);
+        String[] expected = Logger.getStackTracesStringArray(nullObject);
+
+        Assert.assertArrayEquals(result, expected);
+        assertEquals(result.length, 1);
+        assertNull(result[0]);
     }
 }
