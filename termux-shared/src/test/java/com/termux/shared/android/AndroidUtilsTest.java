@@ -77,4 +77,21 @@ public class AndroidUtilsTest {
         assertEquals(expected,result);
     }
 
+    /**
+     * Purpose: test get SystemProperty fail because of null in input
+     * Input: null
+     * Expected: null
+     *
+     */
+
+    @Test
+    public void testGetSystemPropertyWithAndroidAPINullFail() {
+        // Create an active task
+        // Call your function
+        String result = AndroidUtils.getSystemPropertyWithAndroidAPI(null);
+        String expected = null;
+        // Check the result
+        assertEquals(expected,result);
+    }
+
 }
