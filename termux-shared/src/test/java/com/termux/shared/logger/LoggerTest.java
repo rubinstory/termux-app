@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class LoggerTest extends TestCase {
@@ -186,10 +187,25 @@ public class LoggerTest extends TestCase {
     public void testGetStackTracesStringArrayForNullThrowable() {
         Throwable nullObject = null;
         String[] result = Logger.getStackTracesStringArray(nullObject);
-        String[] expected = Logger.getStackTracesStringArray(nullObject);
+        String[] expected = Logger.getStackTracesStringArray(Collections.singletonList(nullObject));
 
         Assert.assertArrayEquals(result, expected);
         assertEquals(result.length, 1);
         assertNull(result[0]);
+    }
+
+    /**
+     * Purpose: Check when throwable is given
+     * Input: Logger.getStackTracesStringArray (Throwable)
+     * Expected:
+     *      (Throwable) = [Logger.getStackTracesStringArray(Collections.singletonList(throwable))]
+     */
+    @Test
+    public void testGetStackTracesStringArrayForThrowable() {
+        Throwable throwable = new Throwable();
+        String[] result = Logger.getStackTracesStringArray(throwable);
+        String[] expected = Logger.getStackTracesStringArray(Collections.singletonList(throwable));
+
+        Assert.assertArrayEquals(result, expected);
     }
 }
