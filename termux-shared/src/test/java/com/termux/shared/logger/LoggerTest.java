@@ -1,5 +1,6 @@
 package com.termux.shared.logger;
 
+import android.content.Context;
 import junit.framework.TestCase;
 
 import org.junit.Assert;
@@ -302,7 +303,7 @@ public class LoggerTest extends TestCase {
 
     /**
      * Purpose: Check logLevelsArray is successfully returned
-     * Input: Logger.testGetLogLevelsArray ()
+     * Input: Logger.getLogLevelsArray ()
      * Expected:
      *      () = { String.valueOf(Logger.LOG_LEVEL_OFF), String.valueOf(Logger.LOG_LEVEL_NORMAL), String.valueOf(Logger.LOG_LEVEL_DEBUG), String.valueOf(Logger.LOG_LEVEL_VERBOSE)}
      */
@@ -313,5 +314,25 @@ public class LoggerTest extends TestCase {
             String.valueOf(Logger.LOG_LEVEL_DEBUG),
             String.valueOf(Logger.LOG_LEVEL_VERBOSE)};
         Assert.assertArrayEquals(Logger.getLogLevelsArray(), expected);
+    }
+
+    /**
+     * Purpose: Check when null context is given
+     * Input: Logger.getLogLevelLabelsArray (null, null, true), (null, CharSequence[], true)
+     * Expected:
+     *      (null, null, true) = null
+     *      (null, CharSequence[], true) = NullPointerException
+     */
+    @Test
+    public void testGetLogLevelLabelsArray() {
+        CharSequence[] result = Logger.getLogLevelLabelsArray(null, null,true);
+        assertNull(result);
+
+        CharSequence[] logLevels = {"1", "2"};
+        try {
+            result = Logger.getLogLevelLabelsArray(null, logLevels,true);
+        } catch(NullPointerException e) {
+            assertTrue(e instanceof NullPointerException);
+        }
     }
 }
