@@ -1,6 +1,6 @@
 package com.termux.shared.models;
 
-import android.util.Pair;
+import androidx.core.util.Pair;
 
 import com.termux.shared.android.TimeStampUtils.MilliSecondUTCTimeStamp;
 import com.termux.shared.markdown.MarkdownUtils;
