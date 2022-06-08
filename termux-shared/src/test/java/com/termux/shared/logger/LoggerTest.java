@@ -146,6 +146,26 @@ public class LoggerTest extends TestCase {
     }
 
     /**
+     * Purpose: Check when null or throwableList is given
+     * Input: Logger.getMessageAndStackTracesString (null, List<Throwable>), ("message", List<Throwable>)
+     * Expected:
+     *      (null, List<Throwable>) = Logger.getStackTracesString(null, Logger.getStackTracesStringArray(List<Throwable>))
+     *      ("message", List<Throwable>) = "message" + ":\n" + Logger.getStackTracesString(null, Logger.getStackTracesStringArray(List<Throwable>))
+     */
+    @Test
+    public void testGetMessageAndStackTracesStringForThrowables() {
+        List<Throwable> throwableList = new ArrayList<Throwable>(Arrays.asList(new Throwable(), new Throwable()));
+
+        String result = Logger.getMessageAndStackTracesString(null, throwableList);
+        String expected = Logger.getStackTracesString(null, Logger.getStackTracesStringArray(throwableList));
+        assertEquals(result, expected);
+
+        result = Logger.getMessageAndStackTracesString("message", throwableList);
+        expected = "message" + ":\n" + Logger.getStackTracesString(null, Logger.getStackTracesStringArray(throwableList));
+        assertEquals(result, expected);
+    }
+
+    /**
      * Purpose: Check when object is null
      * Input: Logger.getSingleLineLogStringEntry (null, null, null), ("label", null, "-")
      * Expected:
@@ -207,5 +227,21 @@ public class LoggerTest extends TestCase {
         String[] expected = Logger.getStackTracesStringArray(Collections.singletonList(throwable));
 
         Assert.assertArrayEquals(result, expected);
+    }
+
+    /**
+     * Purpose: Check when null stackTraceStringArray is given
+     * Input: Logger.getStackTracesString ("message", null), (null, null)
+     * Expected:
+     *      ("message", null) = "message -"
+     *      (null, null) = "StackTraces: -"
+     */
+    @Test
+    public void testGetStackTracesStringForNullStackTraceStringArray() {
+        String result = Logger.getStackTracesString("message", null);
+        assertEquals(result, "message -");
+
+        result = Logger.getStackTracesString(null, null);
+        assertEquals(result, "StackTraces: -");
     }
 }
