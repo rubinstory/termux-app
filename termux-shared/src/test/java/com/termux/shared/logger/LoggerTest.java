@@ -283,4 +283,20 @@ public class LoggerTest extends TestCase {
         expected = "### StackTraces\n" + "\n" + "\n" + "#### Stacktrace 1\n" + "\n" + "```\n" + "test\n" + "```\n" + "\n" + "\n" + "#### Stacktrace 2\n" + "\n" + "```\n" + "test\n" + "```\n" + "##\n";
         assertEquals(result, expected);
     }
+
+    /**
+     * Purpose: Check when object is given
+     * Input: Logger.getMultiLineLogStringEntry ("label", null, "-"), ("label", "object", "-")
+     * Expected:
+     *      ("label", null, "-") = "label: -"
+     *      ("label", "object", "-") = "label:\n```\nobject\n```\n"
+     */
+    @Test
+    public void testGetMultiLineLogStringEntryForObject() {
+        String result = Logger.getMultiLineLogStringEntry("label", null, "-");
+        assertEquals(result, "label: -");
+
+        result = Logger.getMultiLineLogStringEntry("label", "object", "-");
+        assertEquals(result, "label:\n```\nobject\n```\n");
+    }
 }
