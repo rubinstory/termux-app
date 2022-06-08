@@ -103,6 +103,47 @@ public class LoggerTest extends TestCase {
     }
 
     /**
+     * Purpose: Check when null string is given
+     * Input: Logger.getMessageAndStackTracesString (null, null), (null, List<Throwable>)
+     * Expected:
+     *      (null, null) = null
+     *      (null, List<Throwable>) = Logger.getStackTracesString(null, Logger.getStackTracesStringArray(throwableList))
+     */
+    @Test
+    public void testGetMessageAndStackTracesStringForNullString() {
+        List<Throwable> throwableList = new ArrayList<Throwable>(Arrays.asList(new Throwable()));
+
+        String result = Logger.getMessageAndStackTracesString(null, null);
+        assertNull(result);
+
+        result = Logger.getMessageAndStackTracesString(null, throwableList);
+        String expected = Logger.getStackTracesString(null, Logger.getStackTracesStringArray(throwableList));
+        assertEquals(result, expected);
+    }
+
+    /**
+     * Purpose: Check when null or empty throwableList is given
+     * Input: Logger.getMessageAndStackTracesString (null, null), ("message", null), ("message", List<Throwable>)
+     * Expected:
+     *      (null, null) = null
+     *      ("message", null) = "message"
+     *      ("message", List<Throwable>) = "message"
+     */
+    @Test
+    public void testGetMessageAndStackTracesStringForEmptyThrowables() {
+        List<Throwable> emptyThrowableList = new ArrayList<Throwable>();
+
+        String result = Logger.getMessageAndStackTracesString(null, null);
+        assertNull(result);
+
+        result = Logger.getMessageAndStackTracesString("message", null);
+        assertEquals(result, "message");
+
+        result = Logger.getMessageAndStackTracesString("message", emptyThrowableList);
+        assertEquals(result, "message");
+    }
+
+    /**
      * Purpose: Check when object is null
      * Input: Logger.getSingleLineLogStringEntry (null, null, null), ("label", null, "-")
      * Expected:
